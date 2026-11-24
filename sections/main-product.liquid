@@ -67,7 +67,7 @@
                 <fieldset class="ui-option" data-option-index="{{ forloop.index0 }}">
                   <legend>{{ option.name }}</legend>
                   {%- if block.settings.picker_type == 'dropdown' -%}
-                    <select class="ui-select" name="options[{{ option.name | escape }}]" data-option-select>
+                    <select class="ui-select" name="options[{{ option.name | escape }}]" aria-label="{{ option.name | escape }}" data-option-select>
                       {%- for value in option.values -%}<option value="{{ value | escape }}"{% if option.selected_value == value %} selected{% endif %}>{{ value }}</option>{%- endfor -%}
                     </select>
                   {%- else -%}

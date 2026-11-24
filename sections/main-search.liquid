@@ -12,10 +12,10 @@
       <div class="ui-grid">
         {%- for item in search.results -%}
           {%- if item.object_type == 'product' -%}
-            {% render 'ui-card', product: item %}
+            {% render 'ui-card', product: item, heading_level: 'h2' %}
           {%- else -%}
             <article class="ui-card ui-card--text">
-              <h3 class="ui-card__title"><a href="{{ item.url }}">{{ item.title | escape }}</a></h3>
+              <h2 class="ui-card__title"><a href="{{ item.url }}">{{ item.title | escape }}</a></h2>
               <p>{{ item.content | strip_html | truncatewords: 24 }}</p>
             </article>
           {%- endif -%}

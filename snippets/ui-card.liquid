@@ -1,5 +1,5 @@
 {%- comment -%}
-  Params: product (required), show_vendor (bool), eager (bool)
+  Params: product (required), show_vendor (bool), eager (bool), heading_level (h2 or h3, default h3)
 {%- endcomment -%}
 {%- liquid
   assign img_loading = 'lazy'
@@ -25,7 +25,7 @@
   </a>
   <div class="ui-card__body">
     {%- if show_vendor and product.vendor != blank -%}<p class="ui-card__vendor">{{ product.vendor }}</p>{%- endif -%}
-    <h3 class="ui-card__title"><a href="{{ product.url }}">{{ product.title | escape }}</a></h3>
+    <{{ heading_level | default: 'h3' }} class="ui-card__title"><a href="{{ product.url }}">{{ product.title | escape }}</a></{{ heading_level | default: 'h3' }}>
     {% render 'ui-price', product: product %}
   </div>
 </article>

@@ -1,7 +1,8 @@
 {%- liquid
-  assign accent_brightness = settings.color_accent | color_brightness
+  assign white_ratio = settings.color_accent | color_contrast: '#ffffff'
+  assign dark_ratio = settings.color_accent | color_contrast: '#111111'
   assign on_accent = '#ffffff'
-  if accent_brightness > 150
+  if dark_ratio > white_ratio
     assign on_accent = '#111111'
   endif
 -%}

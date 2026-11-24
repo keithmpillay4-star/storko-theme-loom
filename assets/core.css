@@ -29,7 +29,7 @@
   .ui-section__title { margin-bottom: 24px; }
   .ui-section__head .ui-section__title { margin: 0; }
   .ui-center { text-align: center; }
-  .ui-eyebrow { font-size: .78rem; letter-spacing: .12em; text-transform: uppercase; color: color-mix(in srgb, var(--c-fg) 62%, transparent); margin-bottom: 8px; }
+  .ui-eyebrow { font-size: .78rem; letter-spacing: .12em; text-transform: uppercase; color: color-mix(in srgb, var(--c-fg) 70%, transparent); margin-bottom: 8px; }
   .ui-rte > * + * { margin-top: 1em; }
   .ui-rte img { border-radius: var(--r); }
   .ui-rte ul, .ui-rte ol { padding-left: 1.3em; }
@@ -62,8 +62,8 @@
   .ui-price { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: baseline; }
   .ui-price__current { font-weight: 600; }
   .ui-price--sale .ui-price__current { color: var(--c-sale); }
-  .ui-price__compare { color: color-mix(in srgb, var(--c-fg) 55%, transparent); }
-  .ui-price__from, .ui-price__unit { font-size: .85rem; color: color-mix(in srgb, var(--c-fg) 62%, transparent); }
+  .ui-price__compare { color: color-mix(in srgb, var(--c-fg) 70%, transparent); }
+  .ui-price__from, .ui-price__unit { font-size: .85rem; color: color-mix(in srgb, var(--c-fg) 70%, transparent); }
   .ui-badge { position: absolute; top: 10px; left: 10px; padding: .25em .7em; font-size: .75rem; font-weight: 700; border-radius: var(--r-btn); background: var(--c-fg); color: var(--c-bg); }
   .ui-badge--sale { background: var(--c-sale); color: #fff; }
 
@@ -84,7 +84,7 @@
   .ui-card__img--alt { position: absolute; inset: 0; opacity: 0; }
   .ui-card__media:hover .ui-card__img--alt { opacity: 1; }
   .ui-card__placeholder { width: 100%; height: 100%; background: var(--c-surface); }
-  .ui-card__vendor { font-size: .78rem; letter-spacing: .08em; text-transform: uppercase; color: color-mix(in srgb, var(--c-fg) 62%, transparent); }
+  .ui-card__vendor { font-size: .78rem; letter-spacing: .08em; text-transform: uppercase; color: color-mix(in srgb, var(--c-fg) 70%, transparent); }
   .ui-card__title { font-family: var(--f-body); font-size: 1rem; font-weight: 500; }
   .ui-card__title a { text-decoration: none; }
   .ui-card__title a:hover { text-decoration: underline; }
@@ -243,7 +243,7 @@
   /* Collection */
   .ui-collection__head { margin-bottom: 24px; display: grid; gap: 10px; }
   .ui-toolbar { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 16px 24px; margin-bottom: 24px; }
-  .ui-toolbar__count { margin-left: auto; align-self: center; color: color-mix(in srgb, var(--c-fg) 62%, transparent); }
+  .ui-toolbar__count { margin-left: auto; align-self: center; color: color-mix(in srgb, var(--c-fg) 70%, transparent); }
   .ui-sort { display: flex; align-items: center; gap: 8px; }
   .ui-sort .ui-select { width: auto; }
   .ui-filters { flex: 1 1 100%; }
@@ -262,7 +262,7 @@
   .ui-line__img img { border-radius: var(--r); width: 80px; aspect-ratio: 1; object-fit: cover; background: var(--c-surface); }
   .ui-line__info { display: grid; gap: 4px; }
   .ui-line__title { font-weight: 600; text-decoration: none; }
-  .ui-line__variant { font-size: .85rem; color: color-mix(in srgb, var(--c-fg) 62%, transparent); }
+  .ui-line__variant { font-size: .85rem; color: color-mix(in srgb, var(--c-fg) 70%, transparent); }
   .ui-line__price { white-space: nowrap; }
   .ui-line__row { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 6px; }
   .ui-cartpage__grid { display: grid; gap: 32px; }
@@ -280,7 +280,7 @@
   .ui-drawer__empty { display: grid; gap: 16px; justify-items: center; padding-block: 48px; text-align: center; }
   .ui-drawer__foot { padding: 20px; border-top: 1px solid color-mix(in srgb, var(--c-fg) 12%, transparent); display: grid; gap: 10px; }
   .ui-drawer__total { display: flex; justify-content: space-between; font-size: 1.1rem; }
-  .ui-drawer__note { font-size: .82rem; color: color-mix(in srgb, var(--c-fg) 62%, transparent); }
+  .ui-drawer__note { font-size: .82rem; color: color-mix(in srgb, var(--c-fg) 70%, transparent); }
   .ui-drawer__viewcart { text-align: center; }
   .ui-ship { margin-bottom: 20px; font-size: .9rem; }
   .ui-ship__bar { height: 6px; margin-top: 8px; background: var(--c-surface); border-radius: 3px; overflow: hidden; }
