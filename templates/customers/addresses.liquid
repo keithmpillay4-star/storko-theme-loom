@@ -1,0 +1,50 @@
+<section class="ui-wrap ui-section">
+  <a class="ui-link" href="{{ routes.account_url }}">&larr; {{ 'customer.account' | t }}</a>
+  <h1 class="ui-section__title">{{ 'customer.addresses' | t }}</h1>
+  {%- paginate customer.addresses by 10 -%}
+    <ul class="ui-grid ui-grid--2" role="list">
+      {%- for address in customer.addresses -%}
+        <li class="ui-addr">
+          {%- if address == customer.default_address -%}<p class="ui-eyebrow">{{ 'customer.default' | t }}</p>{%- endif -%}
+          <address>{{ address | format_address }}</address>
+          <details>
+            <summary>{{ 'customer.edit' | t }}</summary>
+            {% form 'customer_address', address, class: 'ui-form' %}
+              <label for="a-first-{{ address.id }}">{{ 'customer.first_name' | t }}</label>
+              <input id="a-first-{{ address.id }}" name="address[first_name]" value="{{ form.first_name }}" autocomplete="given-name">
+              <label for="a-last-{{ address.id }}">{{ 'customer.last_name' | t }}</label>
+              <input id="a-last-{{ address.id }}" name="address[last_name]" value="{{ form.last_name }}" autocomplete="family-name">
+              <label for="a-addr1-{{ address.id }}">{{ 'customer.address1' | t }}</label>
+              <input id="a-addr1-{{ address.id }}" name="address[address1]" value="{{ form.address1 }}" autocomplete="address-line1">
+              <label for="a-city-{{ address.id }}">{{ 'customer.city' | t }}</label>
+              <input id="a-city-{{ address.id }}" name="address[city]" value="{{ form.city }}" autocomplete="address-level2">
+              <label for="a-zip-{{ address.id }}">{{ 'customer.zip' | t }}</label>
+              <input id="a-zip-{{ address.id }}" name="address[zip]" value="{{ form.zip }}" autocomplete="postal-code">
+              <label for="a-country-{{ address.id }}">{{ 'customer.country' | t }}</label>
+              <input id="a-country-{{ address.id }}" name="address[country]" value="{{ form.country }}" autocomplete="country-name">
+              <button class="ui-btn" type="submit">{{ 'customer.save' | t }}</button>
+            {% endform %}
+          </details>
+        </li>
+      {%- endfor -%}
+    </ul>
+    <h2>{{ 'customer.add_address' | t }}</h2>
+    {% form 'customer_address', customer.new_address, class: 'ui-form' %}
+      {%- if form.errors -%}<p class="ui-form-error" role="alert">{{ form.errors | default_errors }}</p>{%- endif -%}
+      <label for="n-first">{{ 'customer.first_name' | t }}</label>
+      <input id="n-first" name="address[first_name]" autocomplete="given-name">
+      <label for="n-last">{{ 'customer.last_name' | t }}</label>
+      <input id="n-last" name="address[last_name]" autocomplete="family-name">
+      <label for="n-addr1">{{ 'customer.address1' | t }}</label>
+      <input id="n-addr1" name="address[address1]" autocomplete="address-line1">
+      <label for="n-city">{{ 'customer.city' | t }}</label>
+      <input id="n-city" name="address[city]" autocomplete="address-level2">
+      <label for="n-zip">{{ 'customer.zip' | t }}</label>
+      <input id="n-zip" name="address[zip]" autocomplete="postal-code">
+      <label for="n-country">{{ 'customer.country' | t }}</label>
+      <input id="n-country" name="address[country]" autocomplete="country-name">
+      <button class="ui-btn" type="submit">{{ 'customer.save' | t }}</button>
+    {% endform %}
+    {% render 'ui-pagination', paginate: paginate %}
+  {%- endpaginate -%}
+</section>

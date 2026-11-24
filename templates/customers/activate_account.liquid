@@ -1,0 +1,12 @@
+<section class="ui-wrap ui-wrap--narrow ui-section">
+  <h1 class="ui-section__title">{{ 'customer.activate_title' | t }}</h1>
+  {% form 'activate_customer_password', class: 'ui-form' %}
+    {%- if form.errors -%}<p class="ui-form-error" role="alert">{{ form.errors | default_errors }}</p>{%- endif -%}
+    <label for="ac-pass">{{ 'general.password' | t }}</label>
+    <input id="ac-pass" type="password" name="customer[password]" autocomplete="new-password" required>
+    <label for="ac-conf">{{ 'customer.confirm_password' | t }}</label>
+    <input id="ac-conf" type="password" name="customer[password_confirmation]" autocomplete="new-password" required>
+    <button class="ui-btn" type="submit" name="activate">{{ 'customer.activate' | t }}</button>
+    <button class="ui-btn ui-btn--ghost" type="submit" name="decline">{{ 'customer.decline' | t }}</button>
+  {% endform %}
+</section>

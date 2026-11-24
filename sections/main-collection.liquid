@@ -1,0 +1,74 @@
+{%- paginate collection.products by section.settings.per_page -%}
+<section class="ui-wrap ui-section ui-collection" data-module="filters">
+  <header class="ui-collection__head">
+    <h1>{{ collection.title }}</h1>
+    {%- if section.settings.show_description and collection.description != blank -%}<div class="ui-rte">{{ collection.description }}</div>{%- endif -%}
+  </header>
+
+  <form class="ui-toolbar" id="filter-form" method="get" data-filter-form>
+    {%- if section.settings.enable_filtering and collection.filters.size > 0 -%}
+      <details class="ui-filters" open>
+        <summary class="ui-btn ui-btn--ghost">{{ 'general.filters' | t }}{% render 'ui-icon', name: 'chevron' %}</summary>
+        <div class="ui-filters__panel">
+          {%- for filter in collection.filters -%}
+            <fieldset class="ui-filter">
+              <legend>{{ filter.label }}</legend>
+              {%- case filter.type -%}
+                {%- when 'price_range' -%}
+                  <div class="ui-filter__price">
+                    <label>{{ 'general.from' | t }} <input type="number" name="{{ filter.min_value.param_name }}" value="{{ filter.min_value.value | money_without_currency | replace: ',', '' }}" min="0" placeholder="0"></label>
+                    <label>{{ 'general.to' | t }} <input type="number" name="{{ filter.max_value.param_name }}" value="{{ filter.max_value.value | money_without_currency | replace: ',', '' }}" min="0" placeholder="{{ filter.range_max | money_without_currency }}"></label>
+                  </div>
+                {%- else -%}
+                  {%- for value in filter.values -%}
+                    <label class="ui-check{% if value.count == 0 and value.active == false %} is-disabled{% endif %}">
+                      <input type="checkbox" name="{{ value.param_name }}" value="{{ value.value }}"{% if value.active %} checked{% endif %}{% if value.count == 0 and value.active == false %} disabled{% endif %}>
+                      <span>{{ value.label }} <small>({{ value.count }})</small></span>
+                    </label>
+                  {%- endfor -%}
+              {%- endcase -%}
+            </fieldset>
+          {%- endfor -%}
+          <noscript><button class="ui-btn" type="submit">{{ 'general.apply' | t }}</button></noscript>
+        </div>
+      </details>
+    {%- endif -%}
+
+    {%- if section.settings.enable_sorting -%}
+      <div class="ui-sort">
+        <label for="sort-by">{{ 'general.sort_by' | t }}</label>
+        <select id="sort-by" name="sort_by" class="ui-select" data-sort>
+          {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
+          {%- for option in collection.sort_options -%}<option value="{{ option.value }}"{% if option.value == sort_by %} selected{% endif %}>{{ option.name }}</option>{%- endfor -%}
+        </select>
+      </div>
+    {%- endif -%}
+    <p class="ui-toolbar__count">{{ 'general.product_count' | t: count: collection.products_count }}</p>
+  </form>
+
+  {%- if collection.products.size == 0 -%}
+    <p class="ui-empty">{{ 'general.no_products' | t }} <a href="{{ collection.url }}">{{ 'general.clear_filters' | t }}</a></p>
+  {%- else -%}
+    <div class="ui-grid ui-grid--{{ section.settings.columns }}">
+      {%- for product in collection.products -%}
+        {% render 'ui-card', product: product, show_vendor: section.settings.show_vendor, eager: forloop.first %}
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+  {% render 'ui-pagination', paginate: paginate %}
+</section>
+{%- endpaginate -%}
+
+{% schema %}
+{
+  "name": "Collection",
+  "settings": [
+    {"type": "range", "id": "per_page", "label": "Products per page", "min": 8, "max": 48, "step": 4, "default": 24},
+    {"type": "range", "id": "columns", "label": "Columns (desktop)", "min": 2, "max": 5, "step": 1, "default": 4},
+    {"type": "checkbox", "id": "show_description", "label": "Show description", "default": true},
+    {"type": "checkbox", "id": "show_vendor", "label": "Show vendor", "default": false},
+    {"type": "checkbox", "id": "enable_filtering", "label": "Enable filtering", "default": true},
+    {"type": "checkbox", "id": "enable_sorting", "label": "Enable sorting", "default": true}
+  ]
+}
+{% endschema %}

@@ -1,0 +1,27 @@
+{%- comment -%}
+  Params: product (required), variant (optional, defaults to selected_or_first_available)
+{%- endcomment -%}
+{%- liquid
+  assign target = variant | default: product.selected_or_first_available_variant
+  assign price = target.price
+  assign compare = target.compare_at_price
+  if product.price_varies and variant == blank
+    assign price = product.price_min
+  endif
+  assign on_sale = false
+  if compare > price
+    assign on_sale = true
+  endif
+-%}
+<div class="ui-price{% if on_sale %} ui-price--sale{% endif %}" data-price>
+  {%- if product.price_varies and variant == blank -%}
+    <span class="ui-price__from">{{ 'products.from' | t }}</span>
+  {%- endif -%}
+  <span class="ui-price__current">{{ price | money }}</span>
+  {%- if on_sale -%}
+    <s class="ui-price__compare"><span class="visually-hidden">{{ 'products.regular_price' | t }}</span> {{ compare | money }}</s>
+  {%- endif -%}
+  {%- if target.unit_price_measurement -%}
+    <span class="ui-price__unit">({{ target.unit_price | money }} / {{ target.unit_price_measurement.reference_value }}{{ target.unit_price_measurement.reference_unit }})</span>
+  {%- endif -%}
+</div>

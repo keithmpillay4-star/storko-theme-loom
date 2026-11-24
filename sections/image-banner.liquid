@@ -1,0 +1,46 @@
+<section class="ui-banner ui-banner--{{ section.settings.height }} ui-banner--{{ section.settings.align }}">
+  {%- if section.settings.image != blank -%}
+    {{ section.settings.image | image_url: width: 2000 | image_tag: loading: 'eager', widths: '750,1100,1500,2000', sizes: '100vw', class: 'ui-banner__img', alt: section.settings.image.alt }}
+  {%- else -%}
+    <div class="ui-banner__img ui-banner__img--placeholder">{{ 'hero-apparel-1' | placeholder_svg_tag }}</div>
+  {%- endif -%}
+  <div class="ui-banner__overlay" style="--o: {{ section.settings.overlay | divided_by: 100.0 }}"></div>
+  <div class="ui-wrap ui-banner__content">
+    {%- for block in section.blocks -%}
+      {%- case block.type -%}
+        {%- when 'eyebrow' -%}<p class="ui-eyebrow" {{ block.shopify_attributes }}>{{ block.settings.text }}</p>
+        {%- when 'heading' -%}<h2 class="ui-banner__title" {{ block.shopify_attributes }}>{{ block.settings.heading }}</h2>
+        {%- when 'text' -%}<p class="ui-banner__text" {{ block.shopify_attributes }}>{{ block.settings.text }}</p>
+        {%- when 'buttons' -%}
+          <div class="ui-banner__buttons" {{ block.shopify_attributes }}>
+            {%- if block.settings.label_1 != blank -%}<a class="ui-btn" href="{{ block.settings.link_1 | default: routes.all_products_collection_url }}">{{ block.settings.label_1 }}</a>{%- endif -%}
+            {%- if block.settings.label_2 != blank -%}<a class="ui-btn ui-btn--light" href="{{ block.settings.link_2 | default: routes.all_products_collection_url }}">{{ block.settings.label_2 }}</a>{%- endif -%}
+          </div>
+      {%- endcase -%}
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Image banner",
+  "settings": [
+    {"type": "image_picker", "id": "image", "label": "Image"},
+    {"type": "select", "id": "height", "label": "Height", "default": "medium", "options": [{"value": "small", "label": "Small"}, {"value": "medium", "label": "Medium"}, {"value": "large", "label": "Large"}]},
+    {"type": "select", "id": "align", "label": "Content alignment", "default": "left", "options": [{"value": "left", "label": "Left"}, {"value": "center", "label": "Center"}]},
+    {"type": "range", "id": "overlay", "label": "Overlay opacity", "min": 0, "max": 80, "step": 5, "unit": "%", "default": 30}
+  ],
+  "blocks": [
+    {"type": "eyebrow", "name": "Eyebrow", "limit": 1, "settings": [{"type": "text", "id": "text", "label": "Text", "default": "New season"}]},
+    {"type": "heading", "name": "Heading", "limit": 1, "settings": [{"type": "text", "id": "heading", "label": "Heading", "default": "Image banner"}]},
+    {"type": "text", "name": "Text", "limit": 1, "settings": [{"type": "text", "id": "text", "label": "Text", "default": "Give customers details about the banner image."}]},
+    {"type": "buttons", "name": "Buttons", "limit": 1, "settings": [
+      {"type": "text", "id": "label_1", "label": "First label", "default": "Shop all"},
+      {"type": "url", "id": "link_1", "label": "First link"},
+      {"type": "text", "id": "label_2", "label": "Second label"},
+      {"type": "url", "id": "link_2", "label": "Second link"}
+    ]}
+  ],
+  "presets": [{"name": "Image banner", "blocks": [{"type": "heading"}, {"type": "text"}, {"type": "buttons"}]}]
+}
+{% endschema %}

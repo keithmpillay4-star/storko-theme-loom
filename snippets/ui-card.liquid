@@ -1,0 +1,31 @@
+{%- comment -%}
+  Params: product (required), show_vendor (bool), eager (bool)
+{%- endcomment -%}
+{%- liquid
+  assign img_loading = 'lazy'
+  if eager
+    assign img_loading = 'eager'
+  endif
+-%}
+<article class="ui-card">
+  <a class="ui-card__media" href="{{ product.url }}" tabindex="-1" aria-hidden="true">
+    {%- if product.featured_media -%}
+      {{ product.featured_media | image_url: width: 800 | image_tag: loading: img_loading, widths: '240,360,480,600,800', sizes: '(min-width: 990px) 25vw, (min-width: 750px) 33vw, 50vw', class: 'ui-card__img', alt: product.featured_media.alt }}
+      {%- if product.media[1] -%}
+        {{ product.media[1] | image_url: width: 800 | image_tag: loading: 'lazy', widths: '240,360,480,600,800', sizes: '(min-width: 990px) 25vw, (min-width: 750px) 33vw, 50vw', class: 'ui-card__img ui-card__img--alt', alt: '' }}
+      {%- endif -%}
+    {%- else -%}
+      <div class="ui-card__placeholder">{{ 'product-1' | placeholder_svg_tag }}</div>
+    {%- endif -%}
+    {%- if product.available == false -%}
+      <span class="ui-badge ui-badge--soldout">{{ 'products.sold_out' | t }}</span>
+    {%- elsif product.compare_at_price > product.price -%}
+      <span class="ui-badge ui-badge--sale">{{ 'products.sale' | t }}</span>
+    {%- endif -%}
+  </a>
+  <div class="ui-card__body">
+    {%- if show_vendor and product.vendor != blank -%}<p class="ui-card__vendor">{{ product.vendor }}</p>{%- endif -%}
+    <h3 class="ui-card__title"><a href="{{ product.url }}">{{ product.title | escape }}</a></h3>
+    {% render 'ui-price', product: product %}
+  </div>
+</article>

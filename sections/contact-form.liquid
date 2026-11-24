@@ -1,0 +1,24 @@
+<section class="ui-wrap ui-wrap--narrow ui-section">
+  <h1 class="ui-section__title">{{ section.settings.heading | default: page.title }}</h1>
+  {% form 'contact', class: 'ui-form' %}
+    {%- if form.posted_successfully? -%}<p class="ui-form-ok" role="status">{{ 'general.contact_thanks' | t }}</p>{%- endif -%}
+    {%- if form.errors -%}<p class="ui-form-error" role="alert">{{ form.errors | default_errors }}</p>{%- endif -%}
+    <label for="contact-name">{{ 'general.name' | t }}</label>
+    <input id="contact-name" type="text" name="contact[name]" autocomplete="name" value="{{ form.name }}">
+    <label for="contact-email">{{ 'general.email' | t }}</label>
+    <input id="contact-email" type="email" name="contact[email]" autocomplete="email" required value="{{ form.email }}">
+    <label for="contact-phone">{{ 'general.phone' | t }}</label>
+    <input id="contact-phone" type="tel" name="contact[phone]" autocomplete="tel" value="{{ form.phone }}">
+    <label for="contact-body">{{ 'general.message' | t }}</label>
+    <textarea id="contact-body" name="contact[body]" rows="6" required>{{ form.body }}</textarea>
+    <button class="ui-btn" type="submit">{{ 'general.send' | t }}</button>
+  {% endform %}
+</section>
+
+{% schema %}
+{
+  "name": "Contact form",
+  "settings": [{"type": "text", "id": "heading", "label": "Heading"}],
+  "presets": [{"name": "Contact form"}]
+}
+{% endschema %}

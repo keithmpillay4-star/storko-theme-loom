@@ -1,0 +1,12 @@
+{%- comment -%} Param: paginate {%- endcomment -%}
+{%- if paginate.pages > 1 -%}
+  <nav class="ui-pagination" aria-label="{{ 'general.pagination' | t }}">
+    {%- if paginate.previous -%}<a class="ui-pagination__link" href="{{ paginate.previous.url }}" rel="prev">&larr;<span class="visually-hidden"> {{ 'general.previous' | t }}</span></a>{%- endif -%}
+    {%- for part in paginate.parts -%}
+      {%- if part.is_link -%}<a class="ui-pagination__link" href="{{ part.url }}">{{ part.title }}</a>
+      {%- elsif part.title == paginate.current_page -%}<span class="ui-pagination__link is-current" aria-current="page">{{ part.title }}</span>
+      {%- else -%}<span class="ui-pagination__gap">{{ part.title }}</span>{%- endif -%}
+    {%- endfor -%}
+    {%- if paginate.next -%}<a class="ui-pagination__link" href="{{ paginate.next.url }}" rel="next"><span class="visually-hidden">{{ 'general.next' | t }} </span>&rarr;</a>{%- endif -%}
+  </nav>
+{%- endif -%}

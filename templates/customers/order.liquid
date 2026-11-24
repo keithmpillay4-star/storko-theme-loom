@@ -1,0 +1,25 @@
+<section class="ui-wrap ui-section">
+  <a class="ui-link" href="{{ routes.account_url }}">&larr; {{ 'customer.account' | t }}</a>
+  <h1 class="ui-section__title">{{ 'customer.order' | t }} {{ order.name }}</h1>
+  <p>{{ order.created_at | time_tag: format: 'date' }} &middot; {{ order.financial_status_label }} &middot; {{ order.fulfillment_status_label }}</p>
+  <table class="ui-table">
+    <thead><tr><th scope="col">{{ 'customer.product' | t }}</th><th scope="col">{{ 'cart.quantity' | t }}</th><th scope="col">{{ 'customer.total' | t }}</th></tr></thead>
+    <tbody>
+      {%- for line in order.line_items -%}
+        <tr>
+          <th scope="row">{{ line.title }}</th>
+          <td>{{ line.quantity }}</td>
+          <td>{{ line.final_line_price | money }}</td>
+        </tr>
+      {%- endfor -%}
+    </tbody>
+    <tfoot>
+      <tr><th scope="row" colspan="2">{{ 'cart.subtotal' | t }}</th><td>{{ order.line_items_subtotal_price | money }}</td></tr>
+      <tr><th scope="row" colspan="2">{{ 'customer.total' | t }}</th><td><strong>{{ order.total_price | money }}</strong></td></tr>
+    </tfoot>
+  </table>
+  <div class="ui-account">
+    <div><h2>{{ 'customer.billing' | t }}</h2><address>{{ order.billing_address | format_address }}</address></div>
+    <div><h2>{{ 'customer.shipping' | t }}</h2><address>{{ order.shipping_address | format_address }}</address></div>
+  </div>
+</section>

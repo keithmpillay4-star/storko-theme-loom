@@ -1,0 +1,43 @@
+{%- if predictive_search.performed -%}
+  {%- assign products = predictive_search.resources.products -%}
+  {%- assign collections = predictive_search.resources.collections -%}
+  {%- assign articles = predictive_search.resources.articles -%}
+  {%- assign pages = predictive_search.resources.pages -%}
+  {%- assign queries = predictive_search.resources.queries -%}
+  <div class="ui-predict">
+    {%- if products.size == 0 and collections.size == 0 and articles.size == 0 and pages.size == 0 and queries.size == 0 -%}
+      <p class="ui-predict__none">{{ 'general.no_results' | t: terms: predictive_search.terms }}</p>
+    {%- else -%}
+      {%- if queries.size > 0 -%}
+        <ul class="ui-predict__queries">
+          {%- for q in queries -%}<li><a href="{{ q.url }}">{{ q.styled_text }}</a></li>{%- endfor -%}
+        </ul>
+      {%- endif -%}
+      {%- if products.size > 0 -%}
+        <h2 class="ui-predict__title">{{ 'general.products' | t }}</h2>
+        <ul class="ui-predict__products">
+          {%- for product in products -%}
+            <li>
+              <a href="{{ product.url }}" class="ui-predict__item">
+                {%- if product.featured_image -%}{{ product.featured_image | image_url: width: 120 | image_tag: loading: 'lazy', width: 60, alt: '' }}{%- endif -%}
+                <span>{{ product.title | escape }}<br>{% render 'ui-price', product: product %}</span>
+              </a>
+            </li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+      {%- if collections.size > 0 -%}
+        <h2 class="ui-predict__title">{{ 'general.collections' | t }}</h2>
+        <ul>{%- for c in collections -%}<li><a href="{{ c.url }}">{{ c.title }}</a></li>{%- endfor -%}</ul>
+      {%- endif -%}
+      {%- if articles.size > 0 or pages.size > 0 -%}
+        <h2 class="ui-predict__title">{{ 'general.pages' | t }}</h2>
+        <ul>
+          {%- for a in articles -%}<li><a href="{{ a.url }}">{{ a.title }}</a></li>{%- endfor -%}
+          {%- for p in pages -%}<li><a href="{{ p.url }}">{{ p.title }}</a></li>{%- endfor -%}
+        </ul>
+      {%- endif -%}
+      <a class="ui-btn ui-btn--block" href="{{ routes.search_url }}?q={{ predictive_search.terms | escape }}">{{ 'general.view_all_results' | t }}</a>
+    {%- endif -%}
+  </div>
+{%- endif -%}

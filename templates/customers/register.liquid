@@ -1,0 +1,16 @@
+<section class="ui-wrap ui-wrap--narrow ui-section">
+  <h1 class="ui-section__title">{{ 'customer.create' | t }}</h1>
+  {% form 'create_customer', class: 'ui-form' %}
+    {%- if form.errors -%}<p class="ui-form-error" role="alert">{{ form.errors | default_errors }}</p>{%- endif -%}
+    <label for="reg-first">{{ 'customer.first_name' | t }}</label>
+    <input id="reg-first" type="text" name="customer[first_name]" autocomplete="given-name" value="{{ form.first_name }}">
+    <label for="reg-last">{{ 'customer.last_name' | t }}</label>
+    <input id="reg-last" type="text" name="customer[last_name]" autocomplete="family-name" value="{{ form.last_name }}">
+    <label for="reg-email">{{ 'general.email' | t }}</label>
+    <input id="reg-email" type="email" name="customer[email]" autocomplete="email" required value="{{ form.email }}">
+    <label for="reg-password">{{ 'general.password' | t }}</label>
+    <input id="reg-password" type="password" name="customer[password]" autocomplete="new-password" required>
+    <button class="ui-btn" type="submit">{{ 'customer.create' | t }}</button>
+    <a href="{{ routes.account_login_url }}">{{ 'customer.login' | t }}</a>
+  {% endform %}
+</section>

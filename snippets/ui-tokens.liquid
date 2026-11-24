@@ -1,0 +1,27 @@
+{%- liquid
+  assign accent_brightness = settings.color_accent | color_brightness
+  assign on_accent = '#ffffff'
+  if accent_brightness > 150
+    assign on_accent = '#111111'
+  endif
+-%}
+<style>
+  {{ settings.font_heading | font_face: font_display: 'swap' }}
+  {{ settings.font_body | font_face: font_display: 'swap' }}
+  :root {
+    --c-accent: {{ settings.color_accent }};
+    --c-on-accent: {{ on_accent }};
+    --c-bg: {{ settings.color_bg }};
+    --c-fg: {{ settings.color_fg }};
+    --c-surface: {{ settings.color_surface }};
+    --c-sale: {{ settings.color_sale }};
+    --f-heading: {{ settings.font_heading.family }}, {{ settings.font_heading.fallback_families }};
+    --f-body: {{ settings.font_body.family }}, {{ settings.font_body.fallback_families }};
+    --fw-heading: {{ settings.font_heading.weight }};
+    --r: {{ settings.radius }}px;
+    --r-btn: {{ settings.button_radius }}px;
+    --page-w: {{ settings.page_width }}px;
+    --space: {{ settings.section_spacing }}px;
+    --fs-base: {{ settings.font_body_size }}px;
+  }
+</style>

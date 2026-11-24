@@ -1,0 +1,68 @@
+<footer class="ui-footer">
+  <div class="ui-wrap ui-footer__grid">
+    {%- for block in section.blocks -%}
+      <div class="ui-footer__block ui-footer__block--{{ block.type }}" {{ block.shopify_attributes }}>
+        {%- case block.type -%}
+          {%- when 'text' -%}
+            {%- if block.settings.heading != blank -%}<h2 class="ui-footer__title">{{ block.settings.heading }}</h2>{%- endif -%}
+            <div class="ui-rte">{{ block.settings.text }}</div>
+          {%- when 'menu' -%}
+            {%- if block.settings.heading != blank -%}<h2 class="ui-footer__title">{{ block.settings.heading }}</h2>{%- endif -%}
+            <ul class="ui-footer__links">
+              {%- for link in block.settings.menu.links -%}<li><a href="{{ link.url }}">{{ link.title }}</a></li>{%- endfor -%}
+            </ul>
+          {%- when 'newsletter' -%}
+            {%- if block.settings.heading != blank -%}<h2 class="ui-footer__title">{{ block.settings.heading }}</h2>{%- endif -%}
+            {% form 'customer', class: 'ui-newsletter' %}
+              <input type="hidden" name="contact[tags]" value="newsletter">
+              <label class="visually-hidden" for="footer-email-{{ block.id }}">{{ 'general.email' | t }}</label>
+              <input id="footer-email-{{ block.id }}" type="email" name="contact[email]" required autocomplete="email" placeholder="{{ 'general.email' | t }}" value="{{ form.email }}">
+              <button class="ui-btn" type="submit">{{ 'general.subscribe' | t }}</button>
+              {%- if form.posted_successfully? -%}<p class="ui-form-ok" role="status">{{ 'general.subscribed' | t }}</p>{%- endif -%}
+              {%- if form.errors -%}<p class="ui-form-error" role="alert">{{ form.errors | default_errors }}</p>{%- endif -%}
+            {% endform %}
+        {%- endcase -%}
+      </div>
+    {%- endfor -%}
+  </div>
+
+  <div class="ui-wrap ui-footer__bottom">
+    <p>&copy; {{ 'now' | date: '%Y' }} {{ shop.name | link_to: routes.root_url }}</p>
+    {%- if section.settings.show_payment_icons and shop.enabled_payment_types.size > 0 -%}
+      <ul class="ui-payments" role="list">
+        {%- for type in shop.enabled_payment_types -%}<li>{{ type | payment_type_svg_tag: class: 'ui-payments__icon' }}</li>{%- endfor -%}
+      </ul>
+    {%- endif -%}
+    <ul class="ui-footer__legal">
+      {%- if shop.privacy_policy != blank -%}<li>{{ shop.privacy_policy.title | link_to: shop.privacy_policy.url }}</li>{%- endif -%}
+      {%- if shop.refund_policy != blank -%}<li>{{ shop.refund_policy.title | link_to: shop.refund_policy.url }}</li>{%- endif -%}
+      {%- if shop.terms_of_service != blank -%}<li>{{ shop.terms_of_service.title | link_to: shop.terms_of_service.url }}</li>{%- endif -%}
+      {%- if shop.shipping_policy != blank -%}<li>{{ shop.shipping_policy.title | link_to: shop.shipping_policy.url }}</li>{%- endif -%}
+    </ul>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Footer",
+  "settings": [
+    {"type": "checkbox", "id": "show_payment_icons", "label": "Show payment icons", "default": true}
+  ],
+  "blocks": [
+    {"type": "text", "name": "Text", "settings": [
+      {"type": "text", "id": "heading", "label": "Heading", "default": "About us"},
+      {"type": "richtext", "id": "text", "label": "Text", "default": "<p>Share information about your store.</p>"}
+    ]},
+    {"type": "menu", "name": "Menu", "settings": [
+      {"type": "text", "id": "heading", "label": "Heading", "default": "Shop"},
+      {"type": "link_list", "id": "menu", "label": "Menu", "default": "footer"}
+    ]},
+    {"type": "newsletter", "name": "Newsletter", "limit": 1, "settings": [
+      {"type": "text", "id": "heading", "label": "Heading", "default": "Stay in the loop"}
+    ]}
+  ],
+  "default": {
+    "blocks": [{"type": "text"}, {"type": "menu"}, {"type": "newsletter"}]
+  }
+}
+{% endschema %}

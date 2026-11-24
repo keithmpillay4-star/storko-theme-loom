@@ -1,0 +1,28 @@
+<section class="ui-wrap ui-section loom-logos">
+  {%- if section.settings.title != blank -%}<p class="ui-eyebrow ui-center">{{ section.settings.title }}</p>{%- endif -%}
+  <ul class="loom-logos__list" role="list">
+    {%- for block in section.blocks -%}
+      <li {{ block.shopify_attributes }}>
+        {%- if block.settings.logo != blank -%}
+          {{ block.settings.logo | image_url: width: 320 | image_tag: loading: 'lazy', height: 40, alt: block.settings.name }}
+        {%- else -%}
+          <span>{{ block.settings.name }}</span>
+        {%- endif -%}
+      </li>
+    {%- endfor -%}
+  </ul>
+</section>
+
+{% schema %}
+{
+  "name": "Logo list",
+  "settings": [{"type": "text", "id": "title", "label": "Heading", "default": "As seen in"}],
+  "blocks": [
+    {"type": "logo", "name": "Logo", "settings": [
+      {"type": "image_picker", "id": "logo", "label": "Logo"},
+      {"type": "text", "id": "name", "label": "Name (alt text / fallback)", "default": "Brand"}
+    ]}
+  ],
+  "presets": [{"name": "Logo list", "blocks": [{"type": "logo"}, {"type": "logo"}, {"type": "logo"}, {"type": "logo"}]}]
+}
+{% endschema %}

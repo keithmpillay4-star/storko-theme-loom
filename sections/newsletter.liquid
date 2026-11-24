@@ -1,0 +1,25 @@
+<section class="ui-section ui-newsletter-section">
+  <div class="ui-wrap ui-wrap--narrow ui-center">
+    <h2>{{ section.settings.heading }}</h2>
+    {%- if section.settings.text != blank -%}<p>{{ section.settings.text }}</p>{%- endif -%}
+    {% form 'customer', class: 'ui-newsletter' %}
+      <input type="hidden" name="contact[tags]" value="newsletter">
+      <label class="visually-hidden" for="nl-{{ section.id }}">{{ 'general.email' | t }}</label>
+      <input id="nl-{{ section.id }}" type="email" name="contact[email]" required autocomplete="email" placeholder="{{ 'general.email' | t }}" value="{{ form.email }}">
+      <button class="ui-btn" type="submit">{{ 'general.subscribe' | t }}</button>
+      {%- if form.posted_successfully? -%}<p class="ui-form-ok" role="status">{{ 'general.subscribed' | t }}</p>{%- endif -%}
+      {%- if form.errors -%}<p class="ui-form-error" role="alert">{{ form.errors | default_errors }}</p>{%- endif -%}
+    {% endform %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Email signup",
+  "settings": [
+    {"type": "text", "id": "heading", "label": "Heading", "default": "Subscribe to our emails"},
+    {"type": "text", "id": "text", "label": "Subheading", "default": "Be the first to know about new collections and offers."}
+  ],
+  "presets": [{"name": "Email signup"}]
+}
+{% endschema %}

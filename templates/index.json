@@ -1,0 +1,31 @@
+{
+  "sections": {
+    "hero": {
+      "type": "image-banner",
+      "blocks": {
+        "eyebrow": {"type": "eyebrow", "settings": {"text": "The new season"}},
+        "heading": {"type": "heading", "settings": {"heading": "Considered goods for everyday living"}},
+        "buttons": {"type": "buttons", "settings": {"label_1": "Shop the edit", "label_2": "Our story"}}
+      },
+      "block_order": ["eyebrow", "heading", "buttons"],
+      "settings": {"height": "large", "align": "center", "overlay": 25}
+    },
+    "categories": {
+      "type": "collection-list",
+      "blocks": {"c1": {"type": "collection"}, "c2": {"type": "collection"}, "c3": {"type": "collection"}, "c4": {"type": "collection"}},
+      "block_order": ["c1", "c2", "c3", "c4"],
+      "settings": {"title": "Shop by category", "columns": 4}
+    },
+    "featured": {"type": "featured-collection", "settings": {"title": "New arrivals", "limit": 8}},
+    "promos": {
+      "type": "promo-grid",
+      "blocks": {"p1": {"type": "promo"}, "p2": {"type": "promo"}, "p3": {"type": "promo"}},
+      "block_order": ["p1", "p2", "p3"]
+    },
+    "marquee": {"type": "marquee-text"},
+    "story": {"type": "image-with-text", "settings": {"eyebrow": "Our story", "heading": "Made with care", "layout": "right"}},
+    "journal": {"type": "featured-blog"},
+    "newsletter": {"type": "newsletter"}
+  },
+  "order": ["hero", "categories", "featured", "promos", "marquee", "story", "journal", "newsletter"]
+}

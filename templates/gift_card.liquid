@@ -1,0 +1,24 @@
+{%- layout none -%}
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ 'general.gift_card' | t }} &ndash; {{ shop.name }}</title>
+  {% render 'ui-tokens' %}
+  {{ 'core.css' | asset_url | stylesheet_tag }}
+  {{ 'theme.css' | asset_url | stylesheet_tag }}
+  {{ content_for_header }}
+</head>
+<body class="template-gift_card">
+  <main class="ui-wrap ui-wrap--narrow ui-section ui-center" id="main">
+    <h1>{{ shop.name }}</h1>
+    <p class="ui-eyebrow">{{ 'general.gift_card' | t }}</p>
+    <p class="ui-giftcard__amount">{{ gift_card.initial_value | money }}</p>
+    {%- if gift_card.enabled == false or gift_card.expired -%}<p class="ui-form-error">{{ 'general.gift_card_expired' | t }}</p>{%- endif -%}
+    <p>{{ 'general.gift_card_balance' | t }}: <strong>{{ gift_card.balance | money }}</strong></p>
+    <p class="ui-giftcard__code"><code>{{ gift_card.code | format_code }}</code></p>
+    <a class="ui-btn" href="{{ shop.url }}">{{ 'general.shop_now' | t }}</a>
+  </main>
+</body>
+</html>

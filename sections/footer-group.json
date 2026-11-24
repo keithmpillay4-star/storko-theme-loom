@@ -1,0 +1,16 @@
+{
+  "name": "Footer group",
+  "type": "footer",
+  "sections": {
+    "footer": {
+      "type": "footer",
+      "blocks": {
+        "about": {"type": "text", "settings": {"heading": "About us", "text": "<p>Tell customers who you are and what you stand for.</p>"}},
+        "links": {"type": "menu", "settings": {"heading": "Quick links", "menu": "footer"}},
+        "news": {"type": "newsletter", "settings": {"heading": "Stay in the loop"}}
+      },
+      "block_order": ["about", "links", "news"]
+    }
+  },
+  "order": ["footer"]
+}

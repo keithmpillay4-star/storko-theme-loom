@@ -1,0 +1,117 @@
+{%- liquid
+  assign menu = section.settings.menu
+-%}
+<header class="ui-header ui-header--{{ section.settings.layout }}{% if section.settings.sticky %} is-sticky{% endif %}" data-module="header">
+  <div class="ui-wrap ui-header__bar">
+    <button type="button" class="ui-iconbtn ui-header__burger" aria-expanded="false" aria-controls="mobile-nav" data-menu-toggle>
+      {% render 'ui-icon', name: 'menu' %}<span class="visually-hidden">{{ 'general.menu' | t }}</span>
+    </button>
+
+    <a class="ui-logo" href="{{ routes.root_url }}">
+      {%- if section.settings.logo != blank -%}
+        {%- assign logo_height = section.settings.logo_width | divided_by: section.settings.logo.aspect_ratio | round -%}
+        {{ section.settings.logo | image_url: width: 480 | image_tag: loading: 'eager', width: section.settings.logo_width, height: logo_height, alt: shop.name, widths: '120,240,480', sizes: '240px' }}
+      {%- else -%}
+        <span class="ui-logo__text">{{ shop.name }}</span>
+      {%- endif -%}
+    </a>
+
+    <nav class="ui-nav" aria-label="{{ 'general.primary_nav' | t }}">
+      <ul class="ui-nav__list">
+        {%- for link in menu.links -%}
+          <li class="ui-nav__item">
+            {%- if link.links.size > 0 -%}
+              <details class="ui-nav__details" data-nav-details>
+                <summary class="ui-nav__link{% if link.active or link.child_active %} is-active{% endif %}">{{ link.title }}{% render 'ui-icon', name: 'chevron' %}</summary>
+                <ul class="ui-nav__sub{% if section.settings.mega_menu %} ui-nav__sub--mega{% endif %}">
+                  {%- for child in link.links -%}
+                    <li>
+                      <a href="{{ child.url }}" class="ui-nav__sublink">{{ child.title }}</a>
+                      {%- if child.links.size > 0 -%}
+                        <ul class="ui-nav__subsub">
+                          {%- for grandchild in child.links -%}<li><a href="{{ grandchild.url }}">{{ grandchild.title }}</a></li>{%- endfor -%}
+                        </ul>
+                      {%- endif -%}
+                    </li>
+                  {%- endfor -%}
+                </ul>
+              </details>
+            {%- else -%}
+              <a class="ui-nav__link{% if link.active %} is-active{% endif %}" href="{{ link.url }}">{{ link.title }}</a>
+            {%- endif -%}
+          </li>
+        {%- endfor -%}
+      </ul>
+    </nav>
+
+    <div class="ui-header__actions">
+      <button type="button" class="ui-iconbtn" data-search-open aria-haspopup="dialog">
+        {% render 'ui-icon', name: 'search' %}<span class="visually-hidden">{{ 'general.search' | t }}</span>
+      </button>
+      {%- if shop.customer_accounts_enabled -%}
+        <a class="ui-iconbtn ui-header__account" href="{{ routes.account_url }}">
+          {% render 'ui-icon', name: 'user' %}<span class="visually-hidden">{{ 'general.account' | t }}</span>
+        </a>
+      {%- endif -%}
+      {%- if section.settings.cta_label != blank -%}
+        <a class="ui-btn ui-btn--small ui-header__cta" href="{{ section.settings.cta_link }}">{{ section.settings.cta_label }}</a>
+      {%- endif -%}
+      <a class="ui-iconbtn ui-header__cart" href="{{ routes.cart_url }}" data-cart-open>
+        {% render 'ui-icon', name: 'cart' %}
+        <span class="ui-cartcount" data-cart-count{% if cart.item_count == 0 %} hidden{% endif %}>{{ cart.item_count }}</span>
+        <span class="visually-hidden">{{ 'general.cart' | t }}</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="ui-mobilenav" id="mobile-nav" hidden>
+    <ul>
+      {%- for link in menu.links -%}
+        <li>
+          {%- if link.links.size > 0 -%}
+            <details>
+              <summary>{{ link.title }}{% render 'ui-icon', name: 'chevron' %}</summary>
+              <ul>
+                {%- for child in link.links -%}<li><a href="{{ child.url }}">{{ child.title }}</a></li>{%- endfor -%}
+              </ul>
+            </details>
+          {%- else -%}
+            <a href="{{ link.url }}">{{ link.title }}</a>
+          {%- endif -%}
+        </li>
+      {%- endfor -%}
+      {%- if shop.customer_accounts_enabled -%}<li><a href="{{ routes.account_url }}">{{ 'general.account' | t }}</a></li>{%- endif -%}
+    </ul>
+  </div>
+
+  <dialog class="ui-searchdialog" data-search-dialog aria-label="{{ 'general.search' | t }}">
+    <form class="ui-searchdialog__form" action="{{ routes.search_url }}" method="get" role="search">
+      <label class="visually-hidden" for="header-search">{{ 'general.search' | t }}</label>
+      <input id="header-search" type="search" name="q" value="{{ search.terms | escape }}" placeholder="{{ 'general.search_placeholder' | t }}" autocomplete="off" data-search-input>
+      <input type="hidden" name="options[prefix]" value="last">
+      <button class="ui-btn" type="submit">{{ 'general.search' | t }}</button>
+      <button class="ui-iconbtn" type="button" data-search-close>{% render 'ui-icon', name: 'close' %}<span class="visually-hidden">{{ 'general.close' | t }}</span></button>
+    </form>
+    <div class="ui-searchdialog__results" data-search-results aria-live="polite"></div>
+  </dialog>
+</header>
+
+{% schema %}
+{
+  "name": "Header",
+  "class": "section-header",
+  "settings": [
+    {"type": "image_picker", "id": "logo", "label": "Logo"},
+    {"type": "range", "id": "logo_width", "label": "Logo width", "min": 60, "max": 280, "step": 10, "unit": "px", "default": 140},
+    {"type": "link_list", "id": "menu", "label": "Menu", "default": "main-menu"},
+    {"type": "select", "id": "layout", "label": "Layout", "default": "left", "options": [
+      {"value": "left", "label": "Logo left"},
+      {"value": "center", "label": "Logo centered"}
+    ]},
+    {"type": "checkbox", "id": "sticky", "label": "Sticky header", "default": true},
+    {"type": "checkbox", "id": "mega_menu", "label": "Mega menu (multi-column dropdowns)", "default": false},
+    {"type": "text", "id": "cta_label", "label": "Button label"},
+    {"type": "url", "id": "cta_link", "label": "Button link"}
+  ]
+}
+{% endschema %}

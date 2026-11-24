@@ -1,0 +1,33 @@
+<section class="ui-wrap ui-section">
+  {%- if section.settings.title != blank -%}<h2 class="ui-section__title">{{ section.settings.title }}</h2>{%- endif -%}
+  <ul class="ui-grid ui-grid--{{ section.settings.columns }}" role="list">
+    {%- for block in section.blocks -%}
+      {%- assign collection = block.settings.collection -%}
+      <li class="ui-collcard" {{ block.shopify_attributes }}>
+        {%- if collection != blank -%}
+          <a href="{{ collection.url }}">
+            {%- assign img = collection.featured_image | default: collection.products.first.featured_image -%}
+            {%- if img -%}{{ img | image_url: width: 800 | image_tag: loading: 'lazy', widths: '300,500,800', sizes: '(min-width: 750px) 25vw, 50vw', alt: img.alt }}{%- endif -%}
+            <span class="ui-collcard__title">{{ collection.title }}</span>
+          </a>
+        {%- else -%}
+          <a href="#"><div class="ui-card__placeholder">{{ 'collection-1' | placeholder_svg_tag }}</div><span class="ui-collcard__title">{{ 'general.collection_title' | t }}</span></a>
+        {%- endif -%}
+      </li>
+    {%- endfor -%}
+  </ul>
+</section>
+
+{% schema %}
+{
+  "name": "Collection list",
+  "settings": [
+    {"type": "text", "id": "title", "label": "Heading", "default": "Shop by category"},
+    {"type": "range", "id": "columns", "label": "Columns (desktop)", "min": 2, "max": 5, "step": 1, "default": 3}
+  ],
+  "blocks": [
+    {"type": "collection", "name": "Collection", "settings": [{"type": "collection", "id": "collection", "label": "Collection"}]}
+  ],
+  "presets": [{"name": "Collection list", "blocks": [{"type": "collection"}, {"type": "collection"}, {"type": "collection"}]}]
+}
+{% endschema %}

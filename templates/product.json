@@ -1,0 +1,20 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "vendor": {"type": "vendor"},
+        "title": {"type": "title"},
+        "price": {"type": "price"},
+        "variants": {"type": "variant_picker"},
+        "qty": {"type": "quantity"},
+        "buy": {"type": "buy_buttons"},
+        "desc": {"type": "description"},
+        "trust": {"type": "trust"}
+      },
+      "block_order": ["vendor", "title", "price", "variants", "qty", "buy", "trust", "desc"]
+    },
+    "recs": {"type": "product-recommendations"}
+  },
+  "order": ["main", "recs"]
+}

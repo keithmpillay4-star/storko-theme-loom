@@ -1,0 +1,21 @@
+{%- paginate collections by 24 -%}
+<section class="ui-wrap ui-section">
+  <h1 class="ui-section__title">{{ 'general.collections' | t }}</h1>
+  <ul class="ui-grid ui-grid--3" role="list">
+    {%- for collection in collections -%}
+      <li class="ui-collcard">
+        <a href="{{ collection.url }}">
+          {%- if collection.featured_image -%}{{ collection.featured_image | image_url: width: 800 | image_tag: loading: 'lazy', widths: '300,500,800', sizes: '(min-width: 750px) 33vw, 100vw', alt: collection.featured_image.alt }}
+          {%- elsif collection.products.first.featured_image -%}{{ collection.products.first.featured_image | image_url: width: 800 | image_tag: loading: 'lazy', alt: '' }}{%- endif -%}
+          <span class="ui-collcard__title">{{ collection.title }}</span>
+        </a>
+      </li>
+    {%- endfor -%}
+  </ul>
+  {% render 'ui-pagination', paginate: paginate %}
+</section>
+{%- endpaginate -%}
+
+{% schema %}
+{"name": "Collection list page"}
+{% endschema %}

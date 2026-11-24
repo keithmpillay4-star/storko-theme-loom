@@ -1,0 +1,73 @@
+<div class="ui-drawer" data-cart-drawer hidden>
+  <div class="ui-drawer__overlay" data-drawer-close></div>
+  <aside class="ui-drawer__panel" role="dialog" aria-modal="true" aria-labelledby="cart-drawer-title" tabindex="-1">
+    <p class="visually-hidden" role="status" aria-live="polite" data-cart-status></p>
+    <div class="ui-drawer__head">
+      <h2 id="cart-drawer-title">{{ 'general.cart' | t }} <span class="ui-drawer__count" data-cart-count-label>({{ cart.item_count }})</span></h2>
+      <button type="button" class="ui-iconbtn" data-drawer-close>{% render 'ui-icon', name: 'close' %}<span class="visually-hidden">{{ 'general.close' | t }}</span></button>
+    </div>
+
+    <div class="ui-drawer__inner" data-cart-drawer-inner>
+      {%- if cart.item_count == 0 -%}
+        <div class="ui-drawer__empty">
+          <p>{{ 'cart.empty' | t }}</p>
+          <a class="ui-btn" href="{{ routes.all_products_collection_url }}">{{ 'cart.continue' | t }}</a>
+        </div>
+      {%- else -%}
+        {%- if section.settings.free_shipping_threshold > 0 -%}
+          {%- assign threshold = section.settings.free_shipping_threshold | times: 100 -%}
+          {%- assign remaining = threshold | minus: cart.total_price -%}
+          <div class="ui-ship">
+            {%- assign remaining_money = remaining | money -%}
+            {%- if remaining > 0 -%}<p>{{ 'cart.free_shipping_away' | t: amount: remaining_money }}</p>{%- else -%}<p>{{ 'cart.free_shipping_unlocked' | t }}</p>{%- endif -%}
+            {%- assign pct = cart.total_price | times: 100 | divided_by: threshold | at_most: 100 -%}
+            <div class="ui-ship__bar"><span style="width: {{ pct }}%"></span></div>
+          </div>
+        {%- endif -%}
+        <ul class="ui-lines">
+          {%- for item in cart.items -%}
+            <li class="ui-line" data-line="{{ forloop.index }}">
+              <a class="ui-line__img" href="{{ item.url }}">
+                {%- if item.image -%}{{ item.image | image_url: width: 160 | image_tag: loading: 'lazy', width: 80, alt: item.image.alt }}{%- endif -%}
+              </a>
+              <div class="ui-line__info">
+                <a class="ui-line__title" href="{{ item.url }}">{{ item.product.title | escape }}</a>
+                {%- unless item.product.has_only_default_variant -%}<p class="ui-line__variant">{{ item.variant.title }}</p>{%- endunless -%}
+                {%- for property in item.properties -%}{%- unless property.last == blank or property.first contains '_' -%}<p class="ui-line__variant">{{ property.first }}: {{ property.last }}</p>{%- endunless -%}{%- endfor -%}
+                <div class="ui-line__row">
+                  <div class="ui-qty" data-qty>
+                    <button type="button" class="ui-qty__btn" data-qty-minus data-line="{{ forloop.index }}" aria-label="{{ 'cart.decrease' | t }}">{% render 'ui-icon', name: 'minus' %}</button>
+                    <input class="ui-qty__input" type="number" min="0" value="{{ item.quantity }}" data-line="{{ forloop.index }}" data-qty-input aria-label="{{ 'cart.quantity' | t }}">
+                    <button type="button" class="ui-qty__btn" data-qty-plus data-line="{{ forloop.index }}" aria-label="{{ 'cart.increase' | t }}">{% render 'ui-icon', name: 'plus' %}</button>
+                  </div>
+                  <span class="ui-line__price">{{ item.final_line_price | money }}</span>
+                </div>
+              </div>
+              <button type="button" class="ui-iconbtn ui-line__remove" data-line-remove data-line="{{ forloop.index }}">{% render 'ui-icon', name: 'close' %}<span class="visually-hidden">{{ 'cart.remove' | t }}</span></button>
+            </li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+    </div>
+
+    {%- if cart.item_count > 0 -%}
+      <div class="ui-drawer__foot" data-cart-drawer-foot>
+        <p class="ui-drawer__total"><span>{{ 'cart.subtotal' | t }}</span> <strong>{{ cart.total_price | money }}</strong></p>
+        <p class="ui-drawer__note">{{ 'cart.taxes_shipping' | t }}</p>
+        <form action="{{ routes.cart_url }}" method="post">
+          <button type="submit" class="ui-btn ui-btn--block" name="checkout">{{ 'cart.checkout' | t }}</button>
+        </form>
+        <a class="ui-drawer__viewcart" href="{{ routes.cart_url }}">{{ 'cart.view' | t }}</a>
+      </div>
+    {%- endif -%}
+  </aside>
+</div>
+
+{% schema %}
+{
+  "name": "Cart drawer",
+  "settings": [
+    {"type": "number", "id": "free_shipping_threshold", "label": "Free shipping threshold (store currency, 0 to hide)", "default": 0}
+  ]
+}
+{% endschema %}

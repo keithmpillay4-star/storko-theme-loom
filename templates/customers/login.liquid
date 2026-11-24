@@ -1,0 +1,23 @@
+<section class="ui-wrap ui-wrap--narrow ui-section">
+  <h1 class="ui-section__title">{{ 'customer.login' | t }}</h1>
+  {% form 'customer_login', class: 'ui-form' %}
+    {%- if form.errors -%}<p class="ui-form-error" role="alert">{{ form.errors | default_errors }}</p>{%- endif -%}
+    <label for="login-email">{{ 'general.email' | t }}</label>
+    <input id="login-email" type="email" name="customer[email]" autocomplete="email" required>
+    {%- if form.password_needed -%}
+      <label for="login-password">{{ 'general.password' | t }}</label>
+      <input id="login-password" type="password" name="customer[password]" autocomplete="current-password" required>
+    {%- endif -%}
+    <button class="ui-btn" type="submit">{{ 'customer.login' | t }}</button>
+    <a href="{{ routes.account_register_url }}">{{ 'customer.create' | t }}</a>
+  {% endform %}
+  <div id="recover" class="ui-recover">
+    <h2>{{ 'customer.reset_title' | t }}</h2>
+    {% form 'recover_customer_password', class: 'ui-form' %}
+      {%- if form.posted_successfully? -%}<p class="ui-form-ok" role="status">{{ 'customer.reset_sent' | t }}</p>{%- endif -%}
+      <label for="recover-email">{{ 'general.email' | t }}</label>
+      <input id="recover-email" type="email" name="email" required>
+      <button class="ui-btn ui-btn--ghost" type="submit">{{ 'customer.reset_send' | t }}</button>
+    {% endform %}
+  </div>
+</section>

@@ -1,0 +1,39 @@
+<article class="ui-wrap ui-wrap--narrow ui-section ui-article">
+  <header>
+    <p class="ui-eyebrow">{{ article.published_at | time_tag: format: 'date' }}{% if article.author != blank %} &middot; {{ article.author }}{% endif %}</p>
+    <h1>{{ article.title }}</h1>
+  </header>
+  {%- if article.image -%}{{ article.image | image_url: width: 1400 | image_tag: loading: 'eager', widths: '600,900,1400', sizes: '(min-width: 990px) 800px, 100vw', alt: article.image.alt }}{%- endif -%}
+  <div class="ui-rte">{{ article.content }}</div>
+
+  {%- if blog.comments_enabled? -%}
+    <section class="ui-comments">
+      <h2>{{ 'general.comments' | t }}</h2>
+      {%- for comment in article.comments -%}
+        <div class="ui-comment"><strong>{{ comment.author }}</strong> <small>{{ comment.created_at | time_tag: format: 'date' }}</small><div class="ui-rte">{{ comment.content }}</div></div>
+      {%- endfor -%}
+      {% form 'new_comment', article %}
+        {%- if form.posted_successfully? -%}<p class="ui-form-ok" role="status">{{ 'general.comment_thanks' | t }}</p>{%- endif -%}
+        {%- if form.errors -%}<p class="ui-form-error" role="alert">{{ form.errors | default_errors }}</p>{%- endif -%}
+        <label for="comment-author">{{ 'general.name' | t }}</label>
+        <input id="comment-author" type="text" name="comment[author]" value="{{ form.author }}" required>
+        <label for="comment-email">{{ 'general.email' | t }}</label>
+        <input id="comment-email" type="email" name="comment[email]" value="{{ form.email }}" required>
+        <label for="comment-body">{{ 'general.comment' | t }}</label>
+        <textarea id="comment-body" name="comment[body]" rows="5" required>{{ form.body }}</textarea>
+        <button class="ui-btn" type="submit">{{ 'general.post_comment' | t }}</button>
+      {% endform %}
+    </section>
+  {%- endif -%}
+
+  <nav class="ui-article__nav">
+    {%- if blog.previous_article -%}<a href="{{ blog.previous_article.url }}">&larr; {{ blog.previous_article.title }}</a>{%- endif -%}
+    {%- if blog.next_article -%}<a href="{{ blog.next_article.url }}">{{ blog.next_article.title }} &rarr;</a>{%- endif -%}
+  </nav>
+</article>
+
+<script type="application/ld+json">{{ article | structured_data }}</script>
+
+{% schema %}
+{"name": "Article"}
+{% endschema %}
